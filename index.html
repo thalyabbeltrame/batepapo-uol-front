@@ -23,15 +23,15 @@
             </header>
             <main class="chat-messages">
                 <div class="message status">
-                    <p class="timestamp">(09:21:45) </p>
+                    <p class="timestamp">(09:21:45)</p>
                     <p>João entra na sala...</p>
                 </div>
                 <div class="message private">
-                    <p class="timestamp">(09:21:45) </p>
+                    <p class="timestamp">(09:21:45)</p>
                     <p>João entra na sala...</p>
                 </div>
                 <div class="message public">
-                    <p class="timestamp">(09:21:45) </p>
+                    <p class="timestamp">(09:21:45)</p>
                     <p>João entra na sala...</p>
                 </div>
             </main>
@@ -45,7 +45,7 @@
                         <ul>
                             <li class="item-users">
                                 <ion-icon name="people" class="user-icon"></ion-icon>
-                                <span >Todos</span>
+                                <span>Todos</span>
                                 <ion-icon name="checkmark" class="checkmark"></ion-icon>
                             </li>
                         </ul>
@@ -68,7 +68,10 @@
                 </div>
             </aside>
             <footer>
-                <input type="text" id="message-input" placeholder="Escreva aqui..." />
+                <div>
+                    <input type="text" id="message-input" placeholder="Escreva aqui..." />
+                    <p class="message-information">Enviando para Todos (Público)</p>
+                </div>
                 <ion-icon name="paper-plane-outline" id="send-message-btn"></ion-icon>
             </footer>
         </div>

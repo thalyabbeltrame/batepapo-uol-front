@@ -121,6 +121,13 @@ footer {
     z-index: 1;
 }
 
+footer > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10px;
+}
+
 #message-input {
     font-size: 18px;
     font-weight: 400;
@@ -139,6 +146,13 @@ footer {
 
 #message-input:focus {
     outline: none;
+}
+
+.message-information {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 25px;
+    color: #aeaeae;
 }
 
 ion-icon#send-message-btn {
