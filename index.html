@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bate-papo UOL</title>
+        <link rel="stylesheet" href="./css/reset.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <div class="login-screen hidden">
+            <img src="./images/logo.png" alt="Bate-papo UOL" />
+            <div>
+                <input type="text" id="username" placeholder="Digite seu nome" required />
+                <button id="login-btn">Entrar</button>
+            </div>
+        </div>
+        <div class="chat-screen">
+            <header>
+                <img src="./images/logo.png" alt="Bate-papo UOL" />
+                <ion-icon name="people" id="sidebar-btn"></ion-icon>
+            </header>
+            <main class="chat-messages">
+                <div class="message status">
+                    <p class="timestamp">(09:21:45) </p>
+                    <p>João entra na sala...</p>
+                </div>
+                <div class="message private">
+                    <p class="timestamp">(09:21:45) </p>
+                    <p>João entra na sala...</p>
+                </div>
+                <div class="message public">
+                    <p class="timestamp">(09:21:45) </p>
+                    <p>João entra na sala...</p>
+                </div>
+            </main>
+            <aside class="sidebar hidden">
+                <div class="close-sidebar">
+                    <ion-icon name="close-circle"></ion-icon>
+                </div>
+                <div class="users-list">
+                    <section class="users">
+                        <p>Escolha um contato para enviar mensagem:</p>
+                        <ul>
+                            <li class="item-users">
+                                <ion-icon name="people" class="user-icon"></ion-icon>
+                                <span >Todos</span>
+                                <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                            </li>
+                        </ul>
+                    </section>
+                    <section class="visibility">
+                        <p>Escolha a visibilidade:</p>
+                        <ul>
+                            <li class="item-visibility">
+                                <ion-icon name="lock-open" id="public"></ion-icon>
+                                <span>Público</span>
+                                <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                            </li>
+                            <li class="item-visibility">
+                                <ion-icon name="lock-closed" id="private"></ion-icon>
+                                <span>Reservadamente</span>
+                                <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </aside>
+            <footer>
+                <input type="text" id="message-input" placeholder="Escreva aqui..." />
+                <ion-icon name="paper-plane-outline" id="send-message-btn"></ion-icon>
+            </footer>
+        </div>
+        <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+        <script src="./js/app.js"></script>
+    </body>
+</html>
