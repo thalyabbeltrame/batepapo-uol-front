@@ -224,7 +224,7 @@ footer > div {
 }
 
 .users-list .users ul {
-  height: 350px;
+  height: 320px;
   margin-bottom: 20px;
   overflow-y: scroll;
 }
@@ -257,6 +257,26 @@ footer > div {
 .checkmark {
   position: absolute;
   right: 0;
+}
+
+#logoff-btn {
+  font-size: 15px;
+  font-weight: 400;
+  text-align: center;
+  color: #696969;
+  width: 120px;
+  height: 25px;
+  background: #e7e7e7;
+  border-radius: 9px;
+  border: transparent;
+  position: absolute;
+  bottom: 15px;
+  right: 60px;
+}
+
+#logoff-btn:hover {
+  background: #d7d7d7;
+  cursor: pointer;
 }
 
 .chat-messages {

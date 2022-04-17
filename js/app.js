@@ -181,3 +181,7 @@ function selectVisibility(element) {
   element.querySelector('.visibility ul li .checkmark').classList.add('visible');
   document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }
+
+function logOff() {
+  window.location.reload();
+}
