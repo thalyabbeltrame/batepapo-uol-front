@@ -9,22 +9,22 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <div class="login-screen hidden">
+    <div class="login-screen">
       <img src="./images/logo.png" alt="Bate-papo UOL" />
       <div>
         <input type="text" id="username" placeholder="Digite seu nome" required />
-        <button id="login-btn">Entrar</button>
+        <button id="login-btn" onclick="joinTheChat()">Entrar</button>
       </div>
     </div>
-    <div class="chat-screen">
+    <div class="chat-screen hidden">
       <header>
         <img src="./images/logo.png" alt="Bate-papo UOL" />
-        <ion-icon name="people" id="sidebar-btn"></ion-icon>
+        <ion-icon name="people" id="sidebar-btn" onclick="openSidebar()"></ion-icon>
       </header>
       <main class="chat-messages"></main>
       <aside class="sidebar hidden">
         <div class="close-sidebar">
-          <ion-icon name="close-circle"></ion-icon>
+          <ion-icon name="close-circle" onclick="closeSidebar()"></ion-icon>
         </div>
         <div class="users-list">
           <section class="users">
@@ -33,7 +33,7 @@
               <li class="item-users">
                 <ion-icon name="people" class="user-icon"></ion-icon>
                 <span>Todos</span>
-                <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
               </li>
             </ul>
           </section>
@@ -43,12 +43,12 @@
               <li class="item-visibility">
                 <ion-icon name="lock-open" id="public"></ion-icon>
                 <span>Público</span>
-                <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
               </li>
               <li class="item-visibility">
                 <ion-icon name="lock-closed" id="private"></ion-icon>
                 <span>Reservadamente</span>
-                <ion-icon name="checkmark" class="checkmark"></ion-icon>
+                <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
               </li>
             </ul>
           </section>
