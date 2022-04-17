@@ -185,3 +185,17 @@ function selectVisibility(element) {
 function logOff() {
   window.location.reload();
 }
+
+function filterUsers() {
+  const searchUsersInput = document.querySelector("#search-users").value.toUpperCase();
+  const ul = document.querySelector(".users ul");
+  const li = ul.querySelectorAll(".item-users");
+  li.forEach((item) => {
+    const a = item.querySelector("span").innerText;
+    if (a.toUpperCase().indexOf(searchUsersInput) > -1) {
+      item.style.display = "";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
