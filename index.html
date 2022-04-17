@@ -11,9 +11,13 @@
   <body>
     <div class="login-screen">
       <img src="./images/logo.png" alt="Bate-papo UOL" />
-      <div>
+      <div class="login-field">
         <input type="text" id="username" placeholder="Digite seu nome" required />
         <button id="login-btn" onclick="joinTheChat()">Entrar</button>
+      </div>
+      <div class="loading hidden">
+        <img src="./images/spinner.gif" alt="Carregando..." />
+        <p>Entrando...</p>
       </div>
     </div>
     <div class="chat-screen hidden">

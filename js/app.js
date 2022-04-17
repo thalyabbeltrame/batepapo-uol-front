@@ -1,37 +1,47 @@
 let inputName = '';
 let onlineUsers = [];
 
+document.querySelector('#username').addEventListener('keyup', (event) => {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    document.querySelector('#login-btn').click();
+  }
+});
+
 function joinTheChat() {
   inputName = document.querySelector('#username').value;
   const request = {
     name: inputName,
   };
   inputName.value = '';
+  document.querySelector('.login-field').classList.add('hidden');
+  document.querySelector('.loading').classList.remove('hidden');
   axios
     .post('https://mock-api.driven.com.br/api/v6/uol/participants', request)
     .then(() => {
       updateStatus();
-      document.querySelector('.login-screen').style.display = 'none';
-      document.querySelector('.chat-screen').style.display = 'block';
+      document.querySelector('.login-screen').classList.add('hidden');
+      document.querySelector('.chat-screen').classList.remove('hidden');
       getMessages();
-      getOnlineUsers();
+      getActiveUsers();
     })
     .catch((error) => {
       if (error.response.status === 400) {
-        alert('Nome já está em uso ou inválido');
+        alert('Nome já está em uso ou é inválido. Por favor, insira outro!');
       }
     });
 }
 
 function getMessages() {
+  axios.get('https://mock-api.driven.com.br/api/v6/uol/messages').then((response) => {
+    const messages = response.data;
+    renderMessages(messages);
+  });
   setInterval(() => {
-    axios
-      .get('https://mock-api.driven.com.br/api/v6/uol/messages')
-      .then((response) => {
-        const messages = response.data;
-        renderMessages(messages);
-      })
-      .catch((error) => console.log(error));
+    axios.get('https://mock-api.driven.com.br/api/v6/uol/messages').then((response) => {
+      const messages = response.data;
+      renderMessages(messages);
+    });
   }, 5000);
 }
 
@@ -122,7 +132,7 @@ function closeSidebar() {
   document.querySelector('.sidebar').classList.add('hidden');
 }
 
-function getOnlineUsers() {
+function getActiveUsers() {
   axios.get('https://mock-api.driven.com.br/api/v6/uol/participants').then((response) => {
     onlineUsers = response.data;
   });
