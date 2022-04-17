@@ -1,10 +1,19 @@
 let inputName = '';
 let onlineUsers = [];
+let to = 'Todos';
+let visibility = 'público';
 
 document.querySelector('#username').addEventListener('keyup', (event) => {
   if (event.keyCode === 13) {
     event.preventDefault();
     document.querySelector('#login-btn').click();
+  }
+});
+
+document.querySelector('#message-input').addEventListener('keyup', (event) => {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    document.querySelector('#send-message-btn').click();
   }
 });
 
@@ -110,9 +119,9 @@ function sendMessage() {
   let inputMessage = document.querySelector('#message-input').value;
   const request = {
     from: inputName,
-    to: 'Todos',
+    to: to,
     text: inputMessage,
-    type: 'message',
+    type: visibility === 'public' ? 'message' : 'private_message',
   };
   document.querySelector('#message-input').value = '';
   axios
@@ -124,7 +133,7 @@ function sendMessage() {
 }
 
 function openSidebar() {
-  renderOnlineUsers();
+  renderActiveUsers();
   document.querySelector('.sidebar').classList.remove('hidden');
 }
 
@@ -138,15 +147,37 @@ function getActiveUsers() {
   });
 }
 
-function renderOnlineUsers() {
+function renderActiveUsers() {
   const listUsers = document.querySelector('.users ul');
   onlineUsers.forEach((user) => {
-    const userElement = document.createElement('li');
-    userElement.innerHTML = `
-      <ion-icon name="person-circle" class="user-icon"></ion-icon>
-      <span>${user.name}</span>
-      <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
+    listUsers.innerHTML += `
+      <li class="item-users" onclick="selectUser(this)">
+        <ion-icon name="person-circle" class="user-icon"></ion-icon>
+        <span>${user.name}</span>
+        <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
+      </li>
     `;
-    listUsers.appendChild(userElement);
   });
+}
+
+function selectUser(element) {
+  to = element.querySelector('span').innerText;
+  if (document.querySelector('.item-users .visible') !== null) {
+    document.querySelector('.item-users .visible').classList.add('hidden');
+    document.querySelector('.item-users .visible').classList.remove('visible');
+  }
+  element.querySelector('.users ul li .checkmark').classList.remove('hidden');
+  element.querySelector('.users ul li .checkmark').classList.add('visible');
+  document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
+}
+
+function selectVisibility(element) {
+  visibility = element.querySelector('span').innerText.toLowerCase();
+  if (document.querySelector('.item-visibility .visible') !== null) {
+    document.querySelector('.item-visibility .visible').classList.add('hidden');
+    document.querySelector('.item-visibility .visible').classList.remove('visible');
+  }
+  element.querySelector('.visibility ul li .checkmark').classList.remove('hidden');
+  element.querySelector('.visibility ul li .checkmark').classList.add('visible');
+  document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }

@@ -121,7 +121,7 @@ header {
   color: #000000;
 }
 
-ion-icon#sidebar-btn {
+#open-sidebar-btn {
   font-size: 42px;
 }
 
@@ -173,8 +173,13 @@ footer > div {
   color: #aeaeae;
 }
 
-ion-icon#send-message-btn {
+#send-message-btn {
   font-size: 26px;
+}
+
+#send-message-btn:hover,
+#open-sidebar-btn:hover {
+  cursor: pointer;
 }
 
 .sidebar {
@@ -192,6 +197,10 @@ ion-icon#send-message-btn {
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
   position: relative;
+}
+
+.close-sidebar:hover {
+  cursor: pointer;
 }
 
 .close-sidebar ion-icon {

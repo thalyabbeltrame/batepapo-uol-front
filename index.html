@@ -23,18 +23,18 @@
     <div class="chat-screen hidden">
       <header>
         <img src="./images/logo.png" alt="Bate-papo UOL" />
-        <ion-icon name="people" id="sidebar-btn" onclick="openSidebar()"></ion-icon>
+        <ion-icon name="people" id="open-sidebar-btn" onclick="openSidebar()"></ion-icon>
       </header>
       <main class="chat-messages"></main>
       <aside class="sidebar hidden">
-        <div class="close-sidebar">
-          <ion-icon name="close-circle" onclick="closeSidebar()"></ion-icon>
+        <div class="close-sidebar" onclick="closeSidebar()">
+          <ion-icon name="close-circle" id="close-sidebar-btn" onclick="closeSidebar()"></ion-icon>
         </div>
         <div class="users-list">
           <section class="users">
             <p>Escolha um contato para enviar mensagem:</p>
             <ul>
-              <li class="item-users">
+              <li class="item-users" onclick="selectUser(this)">
                 <ion-icon name="people" class="user-icon"></ion-icon>
                 <span>Todos</span>
                 <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
@@ -44,12 +44,12 @@
           <section class="visibility">
             <p>Escolha a visibilidade:</p>
             <ul>
-              <li class="item-visibility">
+              <li class="item-visibility" onclick="selectVisibility(this)">
                 <ion-icon name="lock-open" id="public"></ion-icon>
                 <span>Público</span>
                 <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
               </li>
-              <li class="item-visibility">
+              <li class="item-visibility" onclick="selectVisibility(this)">
                 <ion-icon name="lock-closed" id="private"></ion-icon>
                 <span>Reservadamente</span>
                 <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
@@ -61,7 +61,7 @@
       <footer>
         <div>
           <input type="text" id="message-input" placeholder="Escreva aqui..." />
-          <p class="message-information">Enviando para Todos (Público)</p>
+          <p class="message-information">Enviando para Todos (público)</p>
         </div>
         <ion-icon name="paper-plane-outline" id="send-message-btn" onclick="sendMessage()"></ion-icon>
       </footer>
