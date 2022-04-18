@@ -1,5 +1,5 @@
 let inputUserName = '';
-let to = 'Todos';
+let to = '';
 let visibility = 'público';
 
 document.querySelector('#username').addEventListener('keyup', (event) => {
@@ -18,6 +18,7 @@ document.querySelector('#message-input').addEventListener('keyup', (event) => {
 
 function joinTheChat() {
   inputUserName = document.querySelector('#username').value;
+  if (inputUserName === '') return;
   const request = {
     name: inputUserName,
   };
@@ -115,14 +116,18 @@ function updateUserStatus() {
   setInterval(() => {
     axios
       .post('https://mock-api.driven.com.br/api/v6/uol/status', { name: inputUserName })
-      .catch((err) => window.location.reload());
+      .catch(() => window.location.reload());
   }, 3000);
 }
 
 function getActiveUsers() {
+  axios.get('https://mock-api.driven.com.br/api/v6/uol/participants').then((response) => {
+    const activeUsers = response.data;
+    renderActiveUsers(activeUsers);
+  });
   setInterval(() => {
     axios.get('https://mock-api.driven.com.br/api/v6/uol/participants').then((response) => {
-      let activeUsers = response.data;
+      const activeUsers = response.data;
       renderActiveUsers(activeUsers);
     });
   }, 10000);
@@ -130,11 +135,12 @@ function getActiveUsers() {
 
 function sendMessage() {
   const inputMessage = document.querySelector('#message-input').value;
+  if (inputMessage === '') return;
   const request = {
     from: inputUserName,
-    to: to,
+    to: to || 'Todos',
     text: inputMessage,
-    type: visibility === 'public' ? 'message' : 'private_message',
+    type: visibility === 'público' ? 'message' : 'private_message',
   };
   document.querySelector('#message-input').value = '';
   axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', request).catch(() => window.location.reload());
@@ -149,23 +155,28 @@ function closeSidebar() {
 }
 
 function renderActiveUsers(activeUsers) {
+  activeUsers = activeUsers.filter((user) => user.name !== inputUserName);
+  activeUsers.unshift({ name: 'Todos' });
   let usersList = document.querySelector('.users ul');
   usersList.innerHTML = '';
-  usersList.innerHTML += `
-    <li class="item-users" onclick="selectUser(this)">
-      <ion-icon name="people" class="user-icon"></ion-icon>
-      <span>Todos</span>
-      <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
-    </li>
-  `;
   activeUsers.forEach((user) => {
-    usersList.innerHTML += `
+    if (user.name === to) {
+      usersList.innerHTML += `
       <li class="item-users" onclick="selectUser(this)">
         <ion-icon name="person-circle" class="user-icon"></ion-icon>
         <span>${user.name}</span>
-        <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
+        <ion-icon name="checkmark" class="checkmark visible"></ion-icon>
       </li>
     `;
+    } else {
+      usersList.innerHTML += `
+        <li class="item-users" onclick="selectUser(this)">
+          <ion-icon name="person-circle" class="user-icon"></ion-icon>
+          <span>${user.name}</span>
+          <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
+        </li>
+      `;
+    }
   });
 }
 
