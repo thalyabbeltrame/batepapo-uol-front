@@ -164,15 +164,6 @@ function renderActiveUsers(activeUsers) {
   let usersList = document.querySelector('.users ul');
   usersList.innerHTML = '';
   activeUsers.forEach((user) => {
-    if (user.name === to) {
-      usersList.innerHTML += `
-      <li class="item-users" onclick="selectUser(this)">
-        <ion-icon name="person-circle" class="user-icon"></ion-icon>
-        <span>${user.name}</span>
-        <ion-icon name="checkmark" class="checkmark visible"></ion-icon>
-      </li>
-    `;
-    } else {
       usersList.innerHTML += `
         <li class="item-users" onclick="selectUser(this)">
           <ion-icon name="person-circle" class="user-icon"></ion-icon>
@@ -180,7 +171,9 @@ function renderActiveUsers(activeUsers) {
           <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
         </li>
       `;
-    }
+      if (user.name === to) {
+        usersList.lastElementChild.querySelector('.checkmark.hidden').classList.remove('hidden');
+      }
   });
 }
 
