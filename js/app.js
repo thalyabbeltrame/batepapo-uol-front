@@ -19,14 +19,10 @@ document.querySelector('#message-input').addEventListener('keyup', (event) => {
 function joinTheChat() {
   inputUserName = document.querySelector('#username').value;
   if (inputUserName === '') return;
-  const request = {
-    name: inputUserName,
-  };
-  inputUserName.value = '';
   document.querySelector('.login-field').classList.add('hidden');
   document.querySelector('.loading').classList.remove('hidden');
   axios
-    .post('https://mock-api.driven.com.br/api/v6/uol/participants', request)
+    .post('https://mock-api.driven.com.br/api/v6/uol/participants', { name: inputUserName })
     .then(() => {
       getMessages();
       updateUserStatus();
@@ -137,6 +133,25 @@ function getActiveUsers() {
   }, 10000);
 }
 
+function renderActiveUsers(activeUsers) {
+  activeUsers = activeUsers.filter((user) => user.name !== inputUserName);
+  activeUsers.unshift({ name: 'Todos' });
+  let usersList = document.querySelector('.users ul');
+  usersList.innerHTML = '';
+  activeUsers.forEach((user) => {
+    usersList.innerHTML += `
+        <li class="item-users" onclick="selectUser(this)">
+          <ion-icon name="person-circle" class="user-icon"></ion-icon>
+          <span>${user.name}</span>
+          <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
+        </li>
+      `;
+    if (user.name === to) {
+      usersList.lastElementChild.querySelector('.checkmark.hidden').classList.remove('hidden');
+    }
+  });
+}
+
 function sendMessage() {
   const inputMessage = document.querySelector('#message-input').value;
   if (inputMessage === '') return;
@@ -158,32 +173,13 @@ function closeSidebar() {
   document.querySelector('.sidebar').classList.add('hidden');
 }
 
-function renderActiveUsers(activeUsers) {
-  activeUsers = activeUsers.filter((user) => user.name !== inputUserName);
-  activeUsers.unshift({ name: 'Todos' });
-  let usersList = document.querySelector('.users ul');
-  usersList.innerHTML = '';
-  activeUsers.forEach((user) => {
-      usersList.innerHTML += `
-        <li class="item-users" onclick="selectUser(this)">
-          <ion-icon name="person-circle" class="user-icon"></ion-icon>
-          <span>${user.name}</span>
-          <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
-        </li>
-      `;
-      if (user.name === to) {
-        usersList.lastElementChild.querySelector('.checkmark.hidden').classList.remove('hidden');
-      }
-  });
-}
-
 function selectUser(element) {
   to = element.querySelector('span').innerText;
   document.querySelectorAll('.item-users').forEach((item) => {
     item.querySelector('.checkmark').classList.add('hidden');
   });
   element.querySelector('.checkmark').classList.remove('hidden');
-  document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
+  changeMessageInformation();
 }
 
 function selectVisibility(element) {
@@ -192,6 +188,10 @@ function selectVisibility(element) {
     item.querySelector('.checkmark').classList.add('hidden');
   });
   element.querySelector('.checkmark').classList.remove('hidden');
+  changeMessageInformation();
+}
+
+function changeMessageInformation() {
   document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }
 
