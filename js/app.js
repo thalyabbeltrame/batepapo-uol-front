@@ -54,13 +54,13 @@ function getMessages() {
 }
 
 function renderMessages(messages) {
-  const chatMessages = document.querySelector('.chat-messages');
+  let chatMessages = document.querySelector('.chat-messages');
   chatMessages.innerHTML = '';
 
   messages.forEach((message) => {
-    const messageElement = document.createElement('div');
+    let messageElement = document.createElement('div');
     messageElement.classList.add('message');
-    if (message.type === 'private_message' && !(message.to === inputUserName || message.from === inputUserName)) return;
+    if (checkIfMessageShouldNotAppear(message)) return;
 
     switch (message.type) {
       case 'status':
@@ -72,14 +72,18 @@ function renderMessages(messages) {
       case 'private_message':
         createPrivateMessageElement(message, messageElement);
         break;
-      default:
-        break;
     }
-
     chatMessages.appendChild(messageElement);
   });
 
   chatMessages.lastChild.scrollIntoView();
+}
+
+function checkIfMessageShouldNotAppear(message) {
+  const isPrivateMessage = message.type === 'private_message';
+  const isToMe = message.to === inputUserName;
+  const isFromMe = message.from === inputUserName;
+  return isPrivateMessage && !(isToMe || isFromMe);
 }
 
 function createStatusElement(message, messageElement) {
@@ -182,23 +186,19 @@ function renderActiveUsers(activeUsers) {
 
 function selectUser(element) {
   to = element.querySelector('span').innerText;
-  if (document.querySelector('.item-users .visible') !== null) {
-    document.querySelector('.item-users .visible').classList.add('hidden');
-    document.querySelector('.item-users .visible').classList.remove('visible');
-  }
+  document.querySelectorAll('.item-users').forEach((item) => {
+    item.querySelector('.checkmark').classList.add('hidden');
+  });
   element.querySelector('.checkmark').classList.remove('hidden');
-  element.querySelector('.checkmark').classList.add('visible');
   document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }
 
 function selectVisibility(element) {
   visibility = element.querySelector('span').innerText.toLowerCase();
-  if (document.querySelector('.item-visibility .visible') !== null) {
-    document.querySelector('.item-visibility .visible').classList.add('hidden');
-    document.querySelector('.item-visibility .visible').classList.remove('visible');
-  }
+  document.querySelectorAll('.item-visibility').forEach((item) => {
+    item.querySelector('.checkmark').classList.add('hidden');
+  });
   element.querySelector('.checkmark').classList.remove('hidden');
-  element.querySelector('.checkmark').classList.add('visible');
   document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }
 
