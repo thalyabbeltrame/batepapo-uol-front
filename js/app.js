@@ -79,7 +79,8 @@ function checkIfMessageShouldNotAppear(message) {
   const isPrivateMessage = message.type === 'private_message';
   const isToMe = message.to === inputUserName;
   const isFromMe = message.from === inputUserName;
-  return isPrivateMessage && !(isToMe || isFromMe);
+  const isToAll = message.to === 'Todos';
+  return isPrivateMessage && !(isToMe || isFromMe || isToAll);
 }
 
 function createStatusElement(message, messageElement) {
