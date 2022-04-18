@@ -58,7 +58,6 @@ function renderMessages(messages) {
     let messageElement = document.createElement('div');
     messageElement.classList.add('message');
 
-    message.time = convertUTCtoLocal(message.time);
     switch (message.type) {
       case 'status':
         createStatusElement(message, messageElement);
@@ -74,13 +73,6 @@ function renderMessages(messages) {
   });
 
   chatMessages.lastChild.scrollIntoView();
-}
-
-function convertUTCtoLocal(utcTime) {
-  const hours = (utcTime.substring(0, 2) - 3).toLocaleString('pt-BR', { minimumIntegerDigits: 2 });
-  const minutes = utcTime.substring(3, 5);
-  const seconds = utcTime.substring(6, 8);
-  return `${hours}:${minutes}:${seconds}`;
 }
 
 function checkIfMessageShouldNotAppear(message) {
