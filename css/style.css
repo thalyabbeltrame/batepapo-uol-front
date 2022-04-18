@@ -6,8 +6,6 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  display: flex;
-  justify-content: center;
   background-color: #f3f3f3;
 }
 
@@ -24,13 +22,11 @@ grey {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 100%;
 }
 
 .login-screen img {
   width: 130px;
-  height: 92px; 
+  height: 92px;
   margin: 72px auto 94px auto;
 }
 
@@ -38,12 +34,10 @@ grey {
 .login-screen .loading {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100%;
 }
 
-#username {
+.login-field #username {
   font-size: 18px;
   font-weight: 400;
   line-height: 25px;
@@ -57,15 +51,15 @@ grey {
   margin-bottom: 15px;
 }
 
-#username::placeholder {
+.login-field #username::placeholder {
   color: #aeaeae;
 }
 
-#username:focus {
+.login-field #username:focus {
   outline: none;
 }
 
-#login-btn {
+.login-field #login-btn {
   font-size: 18px;
   font-weight: 400;
   line-height: 25px;
@@ -74,26 +68,23 @@ grey {
   width: 109px;
   height: 45px;
   background: #e7e7e7;
-  border-radius: 9px;
   border: transparent;
+  border-radius: 9px;
 }
 
-#login-btn:hover {
+.login-field #login-btn:hover {
   background: #d7d7d7;
-  cursor: pointer;
 }
 
 .loading img {
-  width: 70px;
-  height: 70px;
-  margin-bottom: 15px;
+  width: 150px;
+  height: 150px;
+  margin: -20px auto 0 auto;
 }
 
 .chat-screen {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   position: relative;
 }
@@ -107,22 +98,67 @@ header {
   padding: 16px 22px;
   background: #ffffff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
-  position: fixed;
   top: 0;
+  left: 0;
   z-index: 1;
+  position: fixed;
 }
 
-.chat-screen img {
+header img {
   width: 75px;
   height: 53px;
 }
 
-.chat-screen ion-icon {
+header ion-icon {
+  font-size: 42px;
   color: #000000;
 }
 
-#open-sidebar-btn {
-  font-size: 42px;
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  padding-top: 26px;
+  margin: 80px auto;
+  overflow-y: scroll;
+}
+
+.chat-messages::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-messages .message {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  border-radius: 2px;
+  margin-bottom: 4px;
+  padding: 13px 8px;
+  overflow-x: hidden;
+}
+
+.chat-messages .message.status {
+  background: #dcdcdc;
+}
+
+.chat-messages .message.private {
+  background: #ffdede;
+}
+
+.chat-messages .message.public {
+  background: #ffffff;
+}
+
+.chat-messages .message p {
+  width: 100%;
+  word-wrap: break-word;
 }
 
 footer {
@@ -136,6 +172,7 @@ footer {
   box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
   position: fixed;
   bottom: 0;
+  left: 0;
   z-index: 1;
 }
 
@@ -146,7 +183,7 @@ footer > div {
   padding-top: 10px;
 }
 
-#message-input {
+footer #message-input {
   font-size: 18px;
   font-weight: 400;
   font-style: italic;
@@ -158,28 +195,23 @@ footer > div {
   border: transparent;
 }
 
-#message-input::placeholder {
+footer #message-input::placeholder {
   color: #000000;
 }
 
-#message-input:focus {
+footer #message-input:focus {
   outline: none;
 }
 
-.message-information {
+footer .message-information {
   font-size: 14px;
   font-weight: 300;
   line-height: 25px;
   color: #aeaeae;
 }
 
-#send-message-btn {
+footer #send-message-btn {
   font-size: 26px;
-}
-
-#send-message-btn:hover,
-#open-sidebar-btn:hover {
-  cursor: pointer;
 }
 
 .sidebar {
@@ -199,10 +231,6 @@ footer > div {
   position: relative;
 }
 
-.close-sidebar:hover {
-  cursor: pointer;
-}
-
 .close-sidebar ion-icon {
   font-size: 30px;
   color: #ffffff;
@@ -211,7 +239,7 @@ footer > div {
   right: 5px;
 }
 
-.users-list {
+.main-sidebar {
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
@@ -223,38 +251,45 @@ footer > div {
   padding: 25px;
 }
 
-#search-users {
+.main-sidebar .users p,
+.main-sidebar .visibility p {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.main-sidebar #search-users {
   font-size: 15px;
   font-weight: 400;
   color: #aeaeae;
-  width: 150px;
+  width: 100%;
   height: 25px;
   background: #ffffff;
   border: 1px solid #d7d7d7;
   border-radius: 4px;
   padding-left: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-#search-users::placeholder {
+.main-sidebar #search-users::placeholder {
   color: #aeaeae;
 }
 
-#search-users:focus {
+.main-sidebar #search-users:focus {
   outline: none;
 }
 
-.users-list .users ul {
-  height: 300px;
+.main-sidebar ul {
+  height: 280px;
   margin-bottom: 20px;
   overflow-y: scroll;
 }
 
-.users-list .users ul::-webkit-scrollbar {
+.main-sidebar ul::-webkit-scrollbar {
   display: none;
 }
 
-.users-list section ul li {
+.main-sidebar li {
   display: flex;
   justify-content: start;
   align-items: center;
@@ -263,24 +298,18 @@ footer > div {
   position: relative;
 }
 
-.users p,
-.visibility p {
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 15px;
-}
-
-.users-list ion-icon {
+.main-sidebar ion-icon {
   font-size: 22px;
   margin-right: 5px;
 }
 
-.checkmark {
+.main-sidebar .checkmark {
+  color: #28BB25;
   position: absolute;
   right: 0;
 }
 
-#logoff-btn {
+.main-sidebar #logoff-btn {
   font-size: 15px;
   font-weight: 400;
   text-align: center;
@@ -295,57 +324,8 @@ footer > div {
   right: 60px;
 }
 
-#logoff-btn:hover {
+.main-sidebar #logoff-btn:hover {
   background: #d7d7d7;
-  cursor: pointer;
-}
-
-.chat-messages {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100%;
-  width: 100%;
-  padding-top: 26px;
-  margin: 80px auto;
-  overflow-y: scroll;
-}
-
-.chat-messages::-webkit-scrollbar {
-  display: none;
-}
-
-.message {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  border-radius: 2px;
-  margin-bottom: 4px;
-  padding: 13px 8px;
-  overflow-x: hidden;   
-}
-
-.message.status {
-  background: #dcdcdc;
-}
-
-.message.private {
-  background: #ffdede;
-}
-
-.message.public {
-  background: #ffffff;
-}
-
-.message.status p,
-.message.private p,
-.message.public p {
-  word-wrap: break-word;
 }
 
 .hidden {

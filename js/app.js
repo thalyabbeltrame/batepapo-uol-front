@@ -1,5 +1,4 @@
-let inputName = '';
-let onlineUsers = [];
+let inputUserName = '';
 let to = 'Todos';
 let visibility = 'público';
 
@@ -18,45 +17,38 @@ document.querySelector('#message-input').addEventListener('keyup', (event) => {
 });
 
 function joinTheChat() {
-  inputName = document.querySelector('#username').value;
+  inputUserName = document.querySelector('#username').value;
   const request = {
-    name: inputName,
+    name: inputUserName,
   };
-  inputName.value = '';
+  inputUserName.value = '';
   document.querySelector('.login-field').classList.add('hidden');
   document.querySelector('.loading').classList.remove('hidden');
   axios
     .post('https://mock-api.driven.com.br/api/v6/uol/participants', request)
     .then(() => {
-      updateStatus();
-      document.querySelector('.login-screen').classList.add('hidden');
-      document.querySelector('.chat-screen').classList.remove('hidden');
       getMessages();
+      updateUserStatus();
       getActiveUsers();
+      setTimeout(() => {
+        document.querySelector('.login-screen').classList.add('hidden');
+        document.querySelector('.chat-screen').classList.remove('hidden');
+      }, 3000);
     })
-    .catch((error) => {
-      if (error.response.status === 400) {
+    .catch((err) => {
+      if (err.response.status === 400) {
         alert('Nome já está em uso ou é inválido. Por favor, insira outro!');
+        window.location.reload();
       }
     });
 }
 
 function getMessages() {
-  axios.get('https://mock-api.driven.com.br/api/v6/uol/messages').then((response) => {
-    const messages = response.data;
-    renderMessages(messages);
-  });
   setInterval(() => {
     axios.get('https://mock-api.driven.com.br/api/v6/uol/messages').then((response) => {
       const messages = response.data;
       renderMessages(messages);
     });
-  }, 5000);
-}
-
-function updateStatus() {
-  setInterval(() => {
-    axios.post('https://mock-api.driven.com.br/api/v6/uol/status', { name: inputName });
   }, 3000);
 }
 
@@ -67,21 +59,25 @@ function renderMessages(messages) {
   messages.forEach((message) => {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
+    if (message.type === 'private_message' && !(message.to === inputUserName || message.from === inputUserName)) return;
 
     switch (message.type) {
       case 'status':
         createStatusElement(message, messageElement);
         break;
       case 'message':
-        createMessageElement(message, messageElement);
+        createPublicMessageElement(message, messageElement);
         break;
       case 'private_message':
         createPrivateMessageElement(message, messageElement);
+        break;
+      default:
         break;
     }
 
     chatMessages.appendChild(messageElement);
   });
+
   chatMessages.lastChild.scrollIntoView();
 }
 
@@ -89,18 +85,18 @@ function createStatusElement(message, messageElement) {
   messageElement.classList.add('status');
   messageElement.innerHTML = `
     <p>
-    <grey>(${message.time})</grey>
-    <strong>${message.from}</strong> ${message.text}
+      <grey>(${message.time})</grey>
+      <strong>${message.from}</strong> ${message.text}
     </p>
   `;
 }
 
-function createMessageElement(message, messageElement) {
+function createPublicMessageElement(message, messageElement) {
   messageElement.classList.add('public');
   messageElement.innerHTML = `
   <p>
-  <grey>(${message.time})</grey>
-  <strong>${message.from}</strong> para <strong>${message.to}</strong>: ${message.text}
+    <grey>(${message.time})</grey>
+    <strong>${message.from}</strong> para <strong>${message.to}</strong>: ${message.text}
   </p>
   `;
 }
@@ -109,31 +105,42 @@ function createPrivateMessageElement(message, messageElement) {
   messageElement.classList.add('private');
   messageElement.innerHTML = `
   <p>
-  <grey>(${message.time})</grey>
-  <strong>${message.from}</strong> reservadamente para <strong>${message.to}</strong>: ${message.text}
+    <grey>(${message.time})</grey>
+    <strong>${message.from}</strong> reservadamente para <strong>${message.to}</strong>: ${message.text}
   </p>
   `;
 }
 
+function updateUserStatus() {
+  setInterval(() => {
+    axios
+      .post('https://mock-api.driven.com.br/api/v6/uol/status', { name: inputUserName })
+      .catch((err) => window.location.reload());
+  }, 3000);
+}
+
+function getActiveUsers() {
+  setInterval(() => {
+    axios.get('https://mock-api.driven.com.br/api/v6/uol/participants').then((response) => {
+      let activeUsers = response.data;
+      renderActiveUsers(activeUsers);
+    });
+  }, 10000);
+}
+
 function sendMessage() {
-  let inputMessage = document.querySelector('#message-input').value;
+  const inputMessage = document.querySelector('#message-input').value;
   const request = {
-    from: inputName,
+    from: inputUserName,
     to: to,
     text: inputMessage,
     type: visibility === 'public' ? 'message' : 'private_message',
   };
   document.querySelector('#message-input').value = '';
-  axios
-    .post('https://mock-api.driven.com.br/api/v6/uol/messages', request)
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => console.log(error));
+  axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', request).catch(() => window.location.reload());
 }
 
 function openSidebar() {
-  renderActiveUsers();
   document.querySelector('.sidebar').classList.remove('hidden');
 }
 
@@ -141,16 +148,18 @@ function closeSidebar() {
   document.querySelector('.sidebar').classList.add('hidden');
 }
 
-function getActiveUsers() {
-  axios.get('https://mock-api.driven.com.br/api/v6/uol/participants').then((response) => {
-    onlineUsers = response.data;
-  });
-}
-
-function renderActiveUsers() {
-  const listUsers = document.querySelector('.users ul');
-  onlineUsers.forEach((user) => {
-    listUsers.innerHTML += `
+function renderActiveUsers(activeUsers) {
+  let usersList = document.querySelector('.users ul');
+  usersList.innerHTML = '';
+  usersList.innerHTML += `
+    <li class="item-users" onclick="selectUser(this)">
+      <ion-icon name="people" class="user-icon"></ion-icon>
+      <span>Todos</span>
+      <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
+    </li>
+  `;
+  activeUsers.forEach((user) => {
+    usersList.innerHTML += `
       <li class="item-users" onclick="selectUser(this)">
         <ion-icon name="person-circle" class="user-icon"></ion-icon>
         <span>${user.name}</span>
@@ -166,8 +175,8 @@ function selectUser(element) {
     document.querySelector('.item-users .visible').classList.add('hidden');
     document.querySelector('.item-users .visible').classList.remove('visible');
   }
-  element.querySelector('.users ul li .checkmark').classList.remove('hidden');
-  element.querySelector('.users ul li .checkmark').classList.add('visible');
+  element.querySelector('.checkmark').classList.remove('hidden');
+  element.querySelector('.checkmark').classList.add('visible');
   document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }
 
@@ -177,8 +186,8 @@ function selectVisibility(element) {
     document.querySelector('.item-visibility .visible').classList.add('hidden');
     document.querySelector('.item-visibility .visible').classList.remove('visible');
   }
-  element.querySelector('.visibility ul li .checkmark').classList.remove('hidden');
-  element.querySelector('.visibility ul li .checkmark').classList.add('visible');
+  element.querySelector('.checkmark').classList.remove('hidden');
+  element.querySelector('.checkmark').classList.add('visible');
   document.querySelector('.message-information').innerText = `Enviando para ${to} (${visibility})`;
 }
 
@@ -187,15 +196,14 @@ function logOff() {
 }
 
 function filterUsers() {
-  const searchUsersInput = document.querySelector("#search-users").value.toUpperCase();
-  const ul = document.querySelector(".users ul");
-  const li = ul.querySelectorAll(".item-users");
+  const searchUsersInput = document.querySelector('#search-users').value.toUpperCase();
+  const li = document.querySelectorAll('.item-users');
   li.forEach((item) => {
-    const a = item.querySelector("span").innerText;
+    const a = item.querySelector('span').innerText;
     if (a.toUpperCase().indexOf(searchUsersInput) > -1) {
-      item.style.display = "";
+      item.style.display = '';
     } else {
-      item.style.display = "none";
+      item.style.display = 'none';
     }
   });
 }

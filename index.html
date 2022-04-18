@@ -30,17 +30,11 @@
         <div class="close-sidebar" onclick="closeSidebar()">
           <ion-icon name="close-circle" id="close-sidebar-btn" onclick="closeSidebar()"></ion-icon>
         </div>
-        <div class="users-list">
+        <div class="main-sidebar">
           <section class="users">
             <p>Escolha um contato para enviar mensagem:</p>
-            <input type="text" id="search-users" onkeyup="filterUsers()" placeholder="Search for users..">
-            <ul>
-              <li class="item-users" onclick="selectUser(this)">
-                <ion-icon name="people" class="user-icon"></ion-icon>
-                <span>Todos</span>
-                <ion-icon name="checkmark" class="checkmark hidden"></ion-icon>
-              </li>
-            </ul>
+            <input type="text" id="search-users" onkeyup="filterUsers()" placeholder="Pesquisar usuários..." />
+            <ul></ul>
           </section>
           <section class="visibility">
             <p>Escolha a visibilidade:</p>
